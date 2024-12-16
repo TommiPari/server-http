@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap');
+body {
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+.divFinale {
+  background-color: black;
+  padding: 5% 5% 5% 5%;
+  color: white;
+  text-align: center;
+}
+
+.animazioneCard {
+  overflow: hidden;
+}
+
+.animazioneCard img {
+  display:block;
+  transition: transform 0.5s;
+}
+
+.animazioneCard:hover img {
+  transform: scale(1.05);
+}
+
+.animazioneCard2:hover {
+  background-color: black;
+  color: white;
+}
+
+.cardHome {
+  background-color: rgb(255, 227, 227);
+  padding: 1vw 1vw 1vw 1vw
+}
+
+@media only screen and (max-width: 960px) {
+  cardHome {
+    text-align: center;
+  }
+}

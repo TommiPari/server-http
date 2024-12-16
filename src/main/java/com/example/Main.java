@@ -12,8 +12,8 @@ import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello world!");
         ServerSocket ss = new ServerSocket(8080);
+        System.out.println("Server avviato!");
         while (true) {
             Socket s = ss.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -25,33 +25,20 @@ public class Main {
             String header;
             do {
                 header = in.readLine();
-                //System.out.println(header);
             } while (header.isEmpty());
             if (resource.equals("/")) {
                 resource = "/index.html";
             }
-            String type;
             File file = new File("htdocs" + resource);
             if (file.exists()) {
-                switch (resource.split("\\.")[1]) {
-                    case "html":
-                        type = "text/html";
-                        break;
-                    case "txt":
-                        type = "text/plain";
-                        break;
-                    default:
-                        type = "";
-                        break;
-                }
                 out.writeBytes(version + " 200 OK\n");
-                out.writeBytes("Content-Type: " + type +"\n");
+                out.writeBytes("Content-Type: " + getConentType(file) +"\n");
                 out.writeBytes("Content-Length: " + file.length() +"\n");
                 out.writeBytes("\n");
                 InputStream input = new FileInputStream(file);
                 byte[] buf = new byte[8192];
                 int n;
-                while ((n = input.read(buf)) != 1) {
+                while ((n = input.read(buf)) != -1) {
                     out.write(buf, 0, n);
                 }
                 input.close();
@@ -61,6 +48,32 @@ public class Main {
                 out.writeBytes("\n");
                 out.writeBytes("");
             }
+            s.close();
+        }
+    }
+
+    private static String getConentType(File file) {
+        String ext = file.getName().split("\\.")[1];
+        System.out.println(file.getName());
+        switch (ext) {
+            case "html":
+            case "htm":
+                return "text/html";
+            case "css":
+                return "text/css";
+            case "jpg":
+            case "jpeg":
+            case "jpg_large":
+            case "jfif":
+                return "image/jpeg";
+            case "webp":
+                return "image/webp";
+            case "png":
+                return "image/png";
+            case "mp4":
+                return "video/mp4";
+            default:
+                return "";
         }
     }
 }
